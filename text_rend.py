@@ -50,8 +50,25 @@ def render_binary_arr(binary_arr, output_path, black = 'ooo', white = '...'):
 
 # next step would be to take the unmodified greyscale array and render it with a sliding scale of characters, much more comples than just b & w
 
-# def render_gs_array(gs_array, output_path, characters = [], thresholds = []):
-# ...
+def render_gs_array(gs_array, output_path, characters = ['...', ',,,' , 'ooo', '888', '|||'], 
+                    thresholds = {'light gray': 35, 'gray': 75, 'dark gray': 150, 'black': 215}):
+    output_str = ""
+    for row in gs_array:
+        for i in row:
+            if i < thresholds['light gray']:
+                output_str += characters[0]
+            elif i < thresholds['gray']:
+                output_str += characters[1]
+            elif i < thresholds['dark gray']:
+                output_str += characters[2]
+            elif i < thresholds['black']:
+                output_str += characters[3]
+            else:
+                output_str += characters[4]
+        output_str += "\n"
+    
+    with open(output_path, "w") as f:
+        f.write(output_str)
 
 
 
@@ -59,3 +76,5 @@ def render_binary_arr(binary_arr, output_path, black = 'ooo', white = '...'):
 
 #binary_array = image_to_binary("./image.png")
 #render_binary_arr(binary_array, "./rendered_image.txt")
+gs_arr = image_to_grayscale('image.png')
+render_gs_array(gs_arr, 'gs_output.txt')
