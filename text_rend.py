@@ -48,22 +48,25 @@ def render_binary_arr(binary_arr, output_path, black = 'ooo', white = '...'):
     with open(output_path, "w") as f:
         f.write(output_str)
 
-# next step would be to take the unmodified greyscale array and render it with a sliding scale of characters, much more comples than just b & w
+# take the unmodified greyscale array and render it with a sliding scale of characters\
 
-def render_gs_array(gs_array, output_path, characters = ['...', ',,,' , 'ooo', '888', '|||'], 
-                    thresholds = {'light gray': 35, 'gray': 75, 'dark gray': 150, 'black': 215}):
+# this could be modified significantly to be able to pass in a custom scale and iterate over each potential "color"
+
+def render_gs_array(gs_array, output_path, characters = ['...', ',,,' , 'ooo', '888', '&&&'], 
+                    thresholds = {'black': 35, 'dark gray': 75, 'gray': 150, 'light gray': 215}):
+    
     output_str = ""
     for row in gs_array:
         for i in row:
-            if i < thresholds['light gray']:
+            if i > thresholds['light gray']:
                 output_str += characters[0]
-            elif i < thresholds['gray']:
+            elif i > thresholds['gray']:
                 output_str += characters[1]
-            elif i < thresholds['dark gray']:
+            elif i > thresholds['dark gray']:
                 output_str += characters[2]
-            elif i < thresholds['black']:
+            elif i > thresholds['black']:
                 output_str += characters[3]
-            else:
+            elif i < thresholds['black']:
                 output_str += characters[4]
         output_str += "\n"
     
@@ -75,6 +78,7 @@ def render_gs_array(gs_array, output_path, characters = ['...', ',,,' , 'ooo', '
 #sample output:
 
 #binary_array = image_to_binary("./image.png")
-#render_binary_arr(binary_array, "./rendered_image.txt")
+#render_binary_arr(binary_array, "./binary_output.txt")
+
 gs_arr = image_to_grayscale('image.png')
 render_gs_array(gs_arr, 'gs_output.txt')
